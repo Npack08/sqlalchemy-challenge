@@ -1,42 +1,42 @@
-import datetime as dt
 import numpy as np
+import pandas as pd
+import datetime as dt
+
+import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
+
 from flask import Flask, jsonify
 
-#################################################
-# Database Setup
-#################################################
+
+# create engine to hawaii.sqlite
 engine = create_engine("sqlite:///Resources/hawaii.sqlite")
+
 # reflect an existing database into a new model
 Base = automap_base()
-# reflect the tables
 Base.prepare(autoload_with=engine)
+
+# reflect the tables
+
+Base.classes.keys()
+
 # Save references to each table
 Measurement = Base.classes.measurement
 Station = Base.classes.station
-# Create our session (link) from Python to the DB
-session = Session(engine)
-#################################################
+
+
+##############################################
 # Flask Setup
-#################################################
+##############################################
 app = Flask(__name__)
-#################################################
+
+# Convert the query results from your precipitation analysis (i.e. retrieve only the last 12 months of data) 
+
+##############################################
 # Flask Routes
-#################################################
-@app.route("/")
-def welcome():
-    return (
-        f"Welcome to the Hawaii Climate Analysis API!<br/>"
-        f"Available Routes:<br/>"
-        f"/api/v1.0/precipitation<br/>"
-        f"/api/v1.0/stations<br/>"
-        f"/api/v1.0/tobs<br/>"
-        f"/api/v1.0/temp/start<br/>"
-        f"/api/v1.0/temp/start/end<br/>"
-        f"<p>'start' and 'end' date should be in the format MMDDYYYY.</p>"
-    )
+##############################################
+
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     session = Session(engine)
@@ -94,4 +94,4 @@ def temp_results(start, end):
     return jsonify(stats_list)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=3000)

@@ -41,6 +41,8 @@ app = Flask(__name__)
 def precipitation():
     session = Session(engine)
 
+    year_ago = dt.date(2017,8,23) - dt.timedelta(days=365)
+
     prcp_results =  session.query(Measurement.date, Measurement.prcp).\
     filter(Measurement.date >= year_ago).all()
 
@@ -67,6 +69,8 @@ def stations():
 def tobs():
     session = Session(engine)
 
+    year_ago = dt.date(2017,8,23) - dt.timedelta(days=365)
+
     tobs_results =  session.query(Measurement.tobs).\
                     filter(Measurement.station =='USC00519281').\
                     filter(Measurement.date >= year_ago).all()
@@ -90,4 +94,4 @@ def temp_results(start, end):
     return jsonify(stats_list)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=3000)
